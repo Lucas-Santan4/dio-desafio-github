@@ -1,0 +1,88 @@
+Comandos básicos do GIT:
+Windows x Unix (Linux/macOS)
+- cd               - cd
+- dir               - ls
+- mkdir          - mkdir
+- del / rmdir   - rm -rf
+- cls               - clear (ctrl + L)
+
+Comando de listagem = dir / ls
+dir de diretórios
+
+Comando de navegação entre pastas = cd
+cd = change directory (para abrir pastas/ir para pasta)
+cd .. (para voltar para a pasta anterior)
+
+Comando de criação de pasta
+mkdir = make directory + nome da pasta
+
+comando de repetição de palavras = echo
+
+Comando direcionador de fluxo = >
+> comando para gerar arquivo + nome do arquivo + tipo do arquivo
+
+Comandos de remoção/exclusão de arquivos ou diretórios
+del (Windows) = deletar arquivos em um diretório (excluíra os arquivos dentro de uma pasta) ex.: del workspace (del + nome da pasta/diretório que deseja limpar)
+rmdir (Windows) = remove directory deletar pasta e componentes nela contidos. Ex.: rmdir workspace (excluíra a pasta workspace e todos os arquivos nela contidos) rmdir + nome do diretório que deseja excluir.
+rm -rf (Linux/macOS) = remove – recursivamente force (remover pasta e recursivamente remover todas as pastas nela contidas, force para que não solicite confirmação) + nome do diretório.
+
+Atalhos de teclado
+Tab = auto completar (nome de diretórios)
+
+Lógica utilizada no GIT
+
+SHA1: algoritmo de encriptação Secure Hash Algorithm 1, que gera um conjunto de caracteres identificador de 40 dígitos que é uma forma curta de representar um arquivo.
+
+Objetos Internos do GIT
+
+Blobs: o objeto blob vai conter o tipo do objeto blob, o tamanho desse arquivo ou string, uma barra contrária ao zero (\0) e o conteúdo de fato do arquivo.
+
+Trees: as trees armazenam blobs, também possui o \0, o blob, o SHA1 e também possui o nome do arquivo, diferente do blob, a árvore será responsável por montar a estrutura de onde estão localizados os arquivos, podendo apontar para blobs ou para outras árvores, e elas também podem ser definidas através de SHA1 (ter um próprio código de criptografia).
+
+Commits: é o objeto que irá juntar tudo, dando sentido para a alteração que está sendo realizado, apontando para uma árvore, um parente (o último commit realizado antes dele), um autor, uma mensagem, os commits também possuem timestamps que são marcadores do tempo em que eles foram criados. Os commits também possuem um SHA1, dessa forma se houver qualquer alteração dentro do arquivo o SHA1 será alterado. Desta forma, é possível observar qualquer mínima alteração realizado em qualquer objeto/componente do arquivo.
+
+Chaves SSH e Tokens
+
+Chave SSH: é uma forma de estabelecer uma conexão segura e encriptada entre duas máquinas.
+
+Criando uma chave SSH: abrir o git bash, no git bash digitar os seguintes comandos: ssh-keygen -t ed25519 -C “e-mail desejado” (C precisa ser maiúsculo, substituir e-mail desejado pelo e-mail que você deseja vincular à chave), o programa irá questionar o destino de criação da chave SSH, você pode optar pelo default apertando a tecla enter, na sequência o Git bash perguntará se deseja criar uma senha para as chaves, você pode digitar uma senha ou caso não tenha a intenção de gerar uma senha, apenas deixe o espaço em branco e pressione enter novamente (o caminho até a pasta será mencionado na string de criação), acessar a pasta em que as chaves foram criadas “cd /c/Users/Windows\ 10/.ssh/” e executar o comando da chave pública “cat id_ed25519.pub” (exemplo de chave caso a sua não seja ed25519, substituir pelo nome, caso não saiba o nome, utilize o comando ls dentro da pasta onde as chaves foram criadas), após executar o comando “cat”, o git bash irá apresentar a chave que terminará com o e-mail vinculado, copie está chave a e adicione-a ao GitHub. Agora volte ao Git bash e inicialize o agente com o comando “eval $(ssh-agent -s)” após inicializado o agente, adicione a chave privada com o comando: “ssh-add id_ed25519” (isto é, desde que você já esteja na pasta onde a chave se encontra, do contrário vá até a pasta através do Git bash) ele solicitará a senha que você cadastrou na criação da chave.
+
+Processo de criação de um “comit”
+
+Comando git init dentro de uma pasta inicializará o git dentro desta determinada pasta criando um arquivo .git (o arquivo é inicialmente oculto, desta forma o comando ls não listará o arquivo .git, para que ele apareça deve-se utilizar a flag -a junto ao ls, ou seja, “ls -a”).
+
+Na primeira utilização do git ele precisará ser configurado, para tal utilizar o seguinte comando “git config –global user.email “e-mail desejado” ” e na sequência “git config –global user.name nome do usuário”.
+
+Para “commitar” um arquivo utilizar os comandos “git add *” e depois “git commit -m “commit inicial” “.
+
+Comandos do git:
+
+Git init – Cria um repositório dentro do git, dentro do diretório/pasta em que foi utilizado.
+
+- O que significa ter um repositório: 
+
+- Repositório remoto (remote repository): basicamente o github que mantém os repositórios online, em nuvem, no servidor, something like that;
+
+- Diretório de trabalho (working directory): é o diretório que está salvo na sua máquina, conforme você modifica este diretório/repositório ele passará para “staging área” e a partir do momento que você “commita” estes arquivos no diretório local, ele passará a ser considerado um repositório local; você só poderá alterar entre o repositório local e o remoto os arquivos que estiverem devidamente “commitados”, ou seja, é necessário que se realize essa alteração, que todos os arquivos estejam “tracked” para que possam ser movidos entre remoto e local; para verificar se há a necessidade de “commitar” algo ou não, você poderá utilizar o comando “git status” que irá mostrar se há ou não arquivos sem “commit”
+
+Git add – move um arquivo untracked para a classe staged; disso quando se cria um arquivo ele passa a constar como unmodified, a partir do momento que ele á alterado passará para modified automaticamente através da comparação entre as chaves SHA1 dos arquivos; se houver um novo comando git add ele retorna para staged; se o arquivo unmodified for removido ele se tornará untracked novamente; quando o arquivo está no estado staged ele está preparado para ser incluído em um commit, que os torna novamente unmodified, como num ciclo;
+
+Tracked e Untracked – Tracked são os arquivos que o git possui ciência, podendo ser subdivididos em unmodified, modified e staged; untracked são aqueles os quais o git não tem ciência/acesso.
+
+- Unmodified: aquele que ainda não foi modificado;
+
+- Modified: aquele que sofreu modificação;
+
+- Staged: conceito chave, arquivos que serão preparados para entrar em outros agrupamentos;
+
+Atrelando o repositório do Git ao GitHub:
+
+Primeiramente criar o repositório no GitHub, posteriormente copiar o link do repositório que será apresentado no GitHub, no Git Bash, utilizar o comando “git remote add origin + o link do repositório”, caso dê certo não haverá nenhuma mensagem, para confirmar utilizar o comando “git remote -v”, para “empurrar” o repositório para o remoto utilizar o comando “git push origin master”, na sequência será solicitado que você autorize a vinculação a partir da senha que você cadastrou anteriormente.
+
+Conflito entre repositórios:
+
+Como o GitHub é uma plataforma integrada onde vários usuários podem alterar um mesmo arquivo simultaneamente, ao gerar modificações em um arquivo no repositório local, antes de enviá-lo para o remoto é necessário comparar as modificações a fim de resolver conflitos, não gerar duplicatas, não atualizar o arquivo com uma codificação menos eficiente, entre outros, para realizar essa comparação é necessário utilizar o comando “git pull origin master” que irá apontar o conflito ou tipo de conflito, dessa forma, você deverá ir até o GitHub, comparar os arquivos e resolver o conflito, para ai sim, voltar ao Git Bash, ao verificar o status o Git deverá apontar que ambos os arquivos foram modificados, desta forma basta utilizar o “git add *” e ai commitar o novo arquivo resolvido com o “git commit -m “message””, e por fim empurrar a nova versão para o repositório no GitHub com o “git push origin master”.
+
+Clonando um repositório:
+
+Entrar no repositório no GitHub, clicar na opção <> code, copiar a URL do código, ir até o Git Bash na pasta desejada e utilizar o comando “git clone + URL” 
